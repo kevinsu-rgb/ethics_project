@@ -1,4 +1,5 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, send_file
+import io
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 from gridfs import GridFS
@@ -26,22 +27,41 @@ app = Flask(__name__)
 def home():
   return render_template('base.html')
 
-@app.route('/upload')
-def upload():
-    with open("bmo.png", 'rb') as file:
-        file_data = file.read()
-    fs.put(file_data, artist = "john", artwork_name = "bmo")
-    
-    return 'Image has been uploaded!'
 
-@app.route('/download')
+@app.route('/upload_page')
+def upload_page():
+    return render_template('upload.html')
+
+
+@app.route('/download_page')
+def download_page():
+    return render_template('download.html')
+
+
+@app.route('/upload', methods=['POST'])
+def upload():
+    file = request.files['artwork_file']    
+    artist_name = request.form['artist_name']
+    artwork_name = request.form['artwork_name']
+    file_data = file.read()
+    fs.put(file_data, artist=artist_name, artwork_name=artwork_name)
+    return render_template('confirmation.html')
+
+
+@app.route('/download', methods=['POST'])
 def download():
-    file_data = database.fs.files.find_one({"artist" : "john", "artwork_name" : "bmo"})
-    
-    with open("bmo2.png", 'wb') as file:
-        file.write(fs.get(file_data['_id']).read())
-        
-    return 'finished downloading'
+    artist = request.form['artist_name']
+    artwork_name = request.form['artwork_name']
+    file_data = database.fs.files.find_one({"artist": artist, "artwork_name": artwork_name})
+    if file_data:
+        file_id = file_data['_id']
+        grid_out = fs.get(file_id)
+        file_stream = io.BytesIO(grid_out.read())
+        file_stream.seek(0)
+        return send_file(file_stream, as_attachment=True, download_name=f"{artwork_name}-{artist}-download.png", mimetype='image/png')
+    else:
+        return "File not found", 404
+
 
 if __name__ == '__main__':
     app.run(debug=True)

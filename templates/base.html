@@ -1,7 +1,44 @@
 <!DOCTYPE html>
-<html>
-<head><title>Flask App</title></head>
-<body>
-    <h1>Welcome to Flask!</h1>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Art Upload</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-gray-100">
+    <div class="max-w-4xl mx-auto p-8">
+        <div class="bg-gray-800 rounded-lg shadow-lg p-8 mb-8">
+            <h1 class="text-3xl font-bold mb-6 text-white">Ethical Use of AI with Art</h1>
+            <h2 class="text-xl mb-3 text-white-400">Kartik - Domenica - Brian - Kevin</h2>
+            <div class="mb-8">
+                <h3 class="text-xl font-semibold mb-3 text-blue-400">Problem Statement</h3>
+                <p class="text-gray-300 mb-4">
+                    Artists' works are being used to train AI models to create art; however, this is generally done without 
+                    the artists' permission, violating the artists' right to intellectual property.
+                </p>
+            </div>
+            <div class="mb-8">
+                <h3 class="text-xl font-semibold mb-3 text-blue-400">Our Solution Statement</h3>
+                <p class="text-gray-300 mb-6">
+                    We aim to address the issue of AI tools violating the right to intellectual property of artists by creating this web platform. 
+                    This web platform will enable artists to upload their content to one of our databases.
+                </p>
+                <ul class="list-disc pl-6 text-gray-300 space-y-2 mb-6">
+                    <li>AI scientists can analyze the infringement of intellectual property with this dataset.</li>
+                    <li>This dataset can be used to train models so that ethical AI development is ensured.</li>
+                </ul>
+            </div>
+            <div class="text-center space-x-4">
+                <a href="/upload_page" class="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">
+                    Upload Your Artwork
+                </a>
+                <a href="/download_page" class="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors mt-4">
+                    Download Your Uploaded Artwork
+                </a>
+            </div>
+        </div>
+        {% block content %}{% endblock %}
+    </div>
 </body>
 </html>
